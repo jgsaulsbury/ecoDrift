@@ -25,12 +25,12 @@
 #' every <- 10
 #' nsp <- 10
 #' ages <- seq(0,tslength,every)
-#' timeseries <- simNT(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
+#' timeseries <- simDrift(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
 #' plot_spindles(occs=timeseries$simulation,ages=ages,linesevery=100)
 #' #then try with migration
-#' timeseries <- simNT(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000,m=0.01)
+#' timeseries <- simDrift(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000,m=0.01)
 #' plot_spindles(occs=timeseries$simulation,ages=ages,linesevery=100)
-simNT <- function(startingabs,ts,ss=NA,m=0,metacommunity=NA){
+simDrift <- function(startingabs,ts,ss=NA,m=0,metacommunity=NA){
   J <- sum(startingabs)
   ts <- ts-min(ts) #in case ts doesn't start at 0
   if(m>0 & any(is.na(metacommunity))){ #if no metacommunity provided...

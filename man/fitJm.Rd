@@ -4,14 +4,7 @@
 \alias{fitJm}
 \title{Find the maximum-likelihood values of J and m for a community change dataset}
 \usage{
-fitJm(
-  occs,
-  ages,
-  sampled = TRUE,
-  generationtime = 1,
-  lowerbounds = c(1, -30),
-  upperbounds = c(10, -1)
-)
+fitJm(occs, ages, sampled = TRUE, metacommunity = NA, generationtime = 1)
 }
 \arguments{
 \item{occs}{matrix of the number of observations in each species at each time.
@@ -44,5 +37,5 @@ optim() takes the midpoint of the J and m search bounds as the starting value.
 \examples{
 set.seed(10)
 sim <- simNT(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.001,ss=1000) #simulate under neutral theory with migration
-fitJm(occs=sim$simulation,ages=sim$times)
+fitJm(occs=sim$simulation,ages=sim$times,metacommunity=rep(0.25,4))
 }

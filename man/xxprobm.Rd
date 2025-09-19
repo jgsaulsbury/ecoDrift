@@ -4,7 +4,14 @@
 \alias{xxprobm}
 \title{Probability of a set of transitions under neutral theory with migration}
 \usage{
-xxprobm(log10Jm, occs, ages, sampled = TRUE, generationtime = 1)
+xxprobm(
+  log10Jm,
+  occs,
+  ages,
+  sampled = TRUE,
+  metacommunity = NA,
+  generationtime = 1
+)
 }
 \arguments{
 \item{log10Jm}{a 2-length vector containing log10 J (community size) and log10 m
@@ -19,6 +26,10 @@ oldest to youngest.}
 
 \item{sampled}{boolean indicating whether occs represents a sampled
 community (TRUE) or instead represents true species abundances (FALSE).}
+
+\item{metacommunity}{relative abundances of each species in the metacommunity,
+given in the same order as in occs. If none given, takes the average species
+abundances across the timeseries as a guess.}
 
 \item{generationtime}{time between generations, in years.}
 }
