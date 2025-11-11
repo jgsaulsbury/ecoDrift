@@ -56,7 +56,7 @@ plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtim
   plot(1,type="n",xlim=xlim,ylim=c(ages[1],tail(ages,1)),log='x',xlab="1/J",ylab=ylab,xaxt='n',yaxt=ifelse(removeyaxis,"n","s"))
   if(!is.na(linesevery)){#horizontal lines depicting time
     for(t in seq(0,max(ages)+linesevery,linesevery)){
-      graphics::lines(c(xlim[1],xlim[2]),c(t,t),col="grey90")}}
+      graphics::lines(c(xlim[1]/10,xlim[2]*10),c(t,t),col="grey90")}}
   points(1/Jhats,xages)
   for(i in seq(length(xages))){ #for every transition
     graphics::lines(c(1/JLBs[i],1/JUBs[i]),c(xages[i],xages[i]))} #draw error bars
