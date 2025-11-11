@@ -28,7 +28,7 @@
 #' every <- 5
 #' nsp <- 4
 #' ages <- seq(0,tslength,every)
-#' timeseries <- simNT(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
+#' timeseries <- simDrift(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
 #' plot_spindles(occs=timeseries$simulation,ages=timeseries$times,linesevery=100)
 plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years",removeyaxis=FALSE){
   buffer <- 0.05 #buffer between spindles
