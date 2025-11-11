@@ -37,7 +37,7 @@
 #' lines(c(-1,10),c(tslength/2,tslength/2),lty='dashed',lwd=2) #plot point where J switches
 #' plot_Js(timeseries,ages) #fit rate through time
 #' lines(c(1E-10,1E-1),c(tslength/2,tslength/2),lty='dashed',lwd=2)
-plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtime=1,searchinterval=c(1,9),...){
+plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtime=1,searchinterval=c(1,9),ylab="Age, years",removeyaxis=FALSE){
   if(is.list(occs)){
     occs <- as.matrix(occs)}
   xages <- (head(ages,-1) + tail(ages,-1))/2 #midpoint of each transition
@@ -53,7 +53,7 @@ plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtim
   if(is.null(xlim)){
     xlim <- c(min(1/JUBs),max(1/JLBs))}
   if(xlim[1]>xlim[2]){xlim <- rev(xlim)}
-  plot(1,type="n",xlim=xlim,ylim=c(max(ages),min(ages)),log='x',xlab="1/J",ylab="Age, years",xaxt='n',...)
+  plot(1,type="n",xlim=xlim,ylim=c(max(ages),min(ages)),log='x',xlab="1/J",ylab=ylab,xaxt='n',yaxt=ifelse(removeyaxis,"n","s"))
   if(!is.na(linesevery)){#horizontal lines depicting time
     for(t in seq(0,max(ages)+linesevery,linesevery)){
       graphics::lines(c(xlim[1],xlim[2]),c(t,t),col="grey90")}}
