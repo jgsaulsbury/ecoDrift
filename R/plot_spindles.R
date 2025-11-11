@@ -37,26 +37,26 @@ plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years"
   occs.prop <- occs.prop[,rev(order(apply(occs.prop,MARGIN=2,FUN=max)))] #resort occs.prop by peak relab
   peak.relabs <- apply(occs.prop, MARGIN=2, FUN=max) #stores peak relab of each sp
   plot(1,type='n',xlim=c(0,sum(peak.relabs)+buffer*(length(peak.relabs)-1)),
-       ylim=c(max(ages),min(ages)),xaxt='n',ylab=ylab,xlab="",yaxt=ifelse(removeyaxis,"n","s"))
+       ylim=c(ages[1],tail(ages,1)),xaxt='n',ylab=ylab,xlab="",yaxt=ifelse(removeyaxis,"n","s"))
   if(plot.ss){
     graphics::mtext("Samples:",cex=0.7,line=0,adj=1.03,col='grey')
     graphics::par(las=2)
-    graphics::axis(side=4,at=ages,labels=round(ss),cex.axis=0.7,tck=-0.01,hadj=0.5,col.axis='grey',col='grey')
+    graphics::axis(side=4,at=ages,labels=rev(round(ss)),cex.axis=0.7,tck=-0.01,hadj=0.5,col.axis='grey',col='grey')
     graphics::par(las=0)}
   graphics::box()
   if(!is.na(linesevery)){#horizontal lines depicting time
     for(t in seq(0,max(ages)+linesevery,linesevery)){
       graphics::lines(c(-1,dim(occs)[2]+1),c(t,t),col="grey90")}}
   for(i in seq(length(peak.relabs))){ #for every sp
-    x <- ifelse(i==1,peak.relabs[i]/2,sum(utils::head(peak.relabs,i-1))+peak.relabs[i]/2 + buffer*(i-1))
+    x <- ifelse(i==1,peak.relabs[i]/2,sum(utils::head(peak.relabs,i-1))+peak.relabs[i]/2 + buffer*(i-1)) #center of spindle
     graphics::par(las=2)
     graphics::axis(side=1,at=x,labels="",tck=-0.01)
     taxnames <- colnames(occs.prop)[i]
     graphics::axis(side=1,at=x,labels=ifelse(!is.null(taxnames),taxnames,""),tick=FALSE,line=-0.5,cex.axis=0.5 + peak.relabs[i]/max(peak.relabs)*0.3)
     graphics::par(las=0)
-    graphics::polygon(x=c(rev(x-occs.prop[,i]/2),x+occs.prop[,i]/2),y=c(rev(ages),ages),col='grey85')
+    graphics::polygon(x=c(x+occs.prop[,i]/2,rev(x-occs.prop[,i]/2)),y=c(rev(ages),ages),col='grey85')
     for(j in seq(length(ages))){ #for every age
-      graphics::lines(c(x-occs.prop[j,i]/2,x+occs.prop[j,i]/2),c(ages[j],ages[j]),lwd=1)
+      graphics::lines(c(x-occs.prop[length(ages)+1-j,i]/2,x+occs.prop[length(ages)+1-j,i]/2),c(ages[j],ages[j]),lwd=1)
     }
   }
 }

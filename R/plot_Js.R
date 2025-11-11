@@ -53,13 +53,13 @@ plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtim
   if(is.null(xlim)){
     xlim <- c(min(1/JUBs),max(1/JLBs))}
   if(xlim[1]>xlim[2]){xlim <- rev(xlim)}
-  plot(1,type="n",xlim=xlim,ylim=c(max(ages),min(ages)),log='x',xlab="1/J",ylab=ylab,xaxt='n',yaxt=ifelse(removeyaxis,"n","s"))
+  plot(1,type="n",xlim=xlim,ylim=c(ages[1],tail(ages,1)),log='x',xlab="1/J",ylab=ylab,xaxt='n',yaxt=ifelse(removeyaxis,"n","s"))
   if(!is.na(linesevery)){#horizontal lines depicting time
     for(t in seq(0,max(ages)+linesevery,linesevery)){
       graphics::lines(c(xlim[1],xlim[2]),c(t,t),col="grey90")}}
-  points(1/Jhats,rev(xages))
+  points(1/Jhats,xages)
   for(i in seq(length(xages))){ #for every transition
-    graphics::lines(c(1/JLBs[i],1/JUBs[i]),c(rev(xages)[i],rev(xages)[i]))} #draw error bars
+    graphics::lines(c(1/JLBs[i],1/JUBs[i]),c(xages[i],xages[i]))} #draw error bars
   axis(side=1,at=10^seq(floor(log10(xlim[1])),ceiling(log10(xlim[2])))) #tick marks
   for(i in seq(floor(log10(xlim[1])),floor(log10(xlim[2])))){
     axis(side=1,at=c(seq(10^i,10^(i+1),10^i)),labels = FALSE,tck=-0.01)
