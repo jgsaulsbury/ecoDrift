@@ -19,6 +19,8 @@
 #' @param ages vector containing the ages of each time slice, in years, from
 #' oldest to youngest. Numbers can run from high to low (e.g., millions of years
 #' ago) or from low to high (e.g., years from the start of a simulation)
+#' @param liksurf boolean indicating whether to include the likelihood surface
+#' for the shift age at each point along ages.
 #' @param sampled boolean indicating whether occs represents a sampled
 #' community (TRUE) or instead represents true species abundances (FALSE).
 #' @param generationtime time between generations, in years. Default is 1.
@@ -65,7 +67,7 @@
 #' lines(1/c(fit$CI_J2[1],fit$CI_J2[1],fit$CI_J1[1],fit$CI_J1[1]),
 #'   c(ages[length(ages)],fit$CI_shiftage[2],fit$CI_shiftage[2],ages[1]),lwd=1,col="grey50")
 #' lines(1/c(fit$J1,fit$J1,fit$J2,fit$J2),c(min(ages),fit$shiftage,fit$shiftage,max(ages)),lwd=2)
-fitJshift <- function(occs,ages,sampled=TRUE,generationtime=1,CI=FALSE,searchinterval=c(1,9)){
+fitJshift <- function(occs,ages,liksurf=FALSE,sampled=TRUE,generationtime=1,CI=FALSE,searchinterval=c(1,9)){
   if(dim(occs)[1] != length(ages)){stop("'ages' must have length equal to the number of rows of 'occs'")}
   bestfits <- list() #list of best-fit models for every shift age (no CIs yet)
   #first age
@@ -87,6 +89,7 @@ fitJshift <- function(occs,ages,sampled=TRUE,generationtime=1,CI=FALSE,searchint
   #ML estimate
   liksurf <- unlist(lapply(bestfits, `[[`, 1))
   out <- bestfits[[which.max(liksurf)]]
+  out$liksurf <- liksurf
   if(CI){
     #cut occs in half again
     occs1 <- occs[(length(ages)+1-which.max(liksurf)):length(ages),]
