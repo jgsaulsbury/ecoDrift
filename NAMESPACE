@@ -2,6 +2,7 @@
 
 export(fitJ)
 export(fitJm)
+export(fitJshift)
 export(plot_Js)
 export(plot_spindles)
 export(simDrift)

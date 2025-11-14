@@ -4,7 +4,14 @@
 \alias{plot_spindles}
 \title{Plots a set of abundance trajectories as spindles}
 \usage{
-plot_spindles(occs, ages, plot.ss = TRUE, linesevery = NA, ...)
+plot_spindles(
+  occs,
+  ages,
+  plot.ss = TRUE,
+  linesevery = NA,
+  ylab = "Age, years",
+  removeyaxis = FALSE
+)
 }
 \arguments{
 \item{occs}{matrix of the number of observations in each species at each time.
@@ -19,6 +26,11 @@ on the right side of the plot.}
 
 \item{linesevery}{value indicating the interval at which to draw horizontal gridlines.
 Default is NA (don't draw them).}
+
+\item{ylab}{value indicating what to print on the y axis. Default is "Age, years"}
+
+\item{removeyaxis}{boolean indicating whether to remove the y axis from the plot,
+allowing the user to plot a custom y axis after the fact. Default is FALSE.}
 }
 \value{
 plots spindle diagrams depicting the relative abundance of each species
@@ -35,6 +47,6 @@ tslength <- 500
 every <- 5
 nsp <- 4
 ages <- seq(0,tslength,every)
-timeseries <- simNT(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
+timeseries <- simDrift(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
 plot_spindles(occs=timeseries$simulation,ages=timeseries$times,linesevery=100)
 }

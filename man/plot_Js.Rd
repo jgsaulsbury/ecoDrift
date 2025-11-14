@@ -12,7 +12,8 @@ plot_Js(
   sampled = TRUE,
   generationtime = 1,
   searchinterval = c(1, 9),
-  ...
+  ylab = "Age, years",
+  removeyaxis = FALSE
 )
 }
 \arguments{
@@ -50,12 +51,12 @@ every <- 5
 nsp <- 8
 ss <- 1000000
 ages <- seq(0,tslength,every)
-timeseries1 <- simNT(startingabs=rep(J1/nsp,nsp),ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #first half
-timeseries2 <- simNT(startingabs=timeseries1[1,]*J2/ss,ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #second half
+timeseries1 <- simDrift(startingabs=rep(J1/nsp,nsp),ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #first half
+timeseries2 <- simDrift(startingabs=timeseries1[1,]*J2/ss,ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #second half
 timeseries <- rbind(timeseries2,timeseries1[-1,])
 par(mfrow=c(1,2))
 plot_spindles(timeseries,ages,plot.ss=FALSE)
-lines(c(-1,10),c(tslength/2,tslength/2),lty='dashed',lwd=2) #plot point where J switches
+lines(c(-1,10),c(tslength/2,tslength/2),lty='dashed',lwd=1) #plot point where J switches
 plot_Js(timeseries,ages) #fit rate through time
-lines(c(1E-10,1E-1),c(tslength/2,tslength/2),lty='dashed',lwd=2)
+lines(c(1E-10,1E-1),c(tslength/2,tslength/2),lty='dashed',lwd=1)
 }

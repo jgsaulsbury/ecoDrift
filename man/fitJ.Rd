@@ -10,7 +10,8 @@ fitJ(
   sampled = TRUE,
   generationtime = 1,
   CI = FALSE,
-  searchinterval = c(1, 9)
+  searchinterval = c(1, 9),
+  CI.df = 1
 )
 }
 \arguments{
@@ -19,17 +20,22 @@ One column for each species, one row for each time slice. Time goes from oldest
 at the bottom to youngest at the top.}
 
 \item{ages}{vector containing the ages of each time slice, in years, from
-oldest to youngest.}
+oldest to youngest. Numbers can run from high to low (e.g., millions of years
+ago) or from low to high (e.g., years from the start of a simulation).}
 
 \item{sampled}{boolean indicating whether occs represents a sampled
 community (TRUE) or instead represents true species abundances (FALSE).}
 
-\item{generationtime}{time between generations, in years.}
+\item{generationtime}{time between generations, in years. Default is 1.}
 
 \item{CI}{boolean indicating whether or not to calculate a confidence interval
 on the maximum-likelihood estimate of J. Uses function CIfunc_J.}
 
 \item{searchinterval}{consider values of log10J within this interval.}
+
+\item{CI.df}{integer giving the number of degrees of freedom to use when
+using the chi-square lookup table to calculate confidence intervals. Should be
+1 unless calculating a simultaneous confidence interval.}
 }
 \value{
 a list containing "loglik", "J", and (optionally) "CI"
@@ -43,6 +49,6 @@ optimize() sometimes tests J values which are so unlikely as to return -Inf.
 This is fine, and suppressWarnings() just keeps this quiet.
 }
 \examples{
-mat <- matrix(data=c(52,12,160,109,30,401,93,31,355),nrow=3)
+mat <- matrix(data=c(520,1200,1600,1090,900,401,930,610,355),nrow=3)
 fitJ(occs=mat,ages=c(200,100,0),CI=TRUE)
 }
