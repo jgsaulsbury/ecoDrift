@@ -53,7 +53,7 @@ plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtim
   if(is.null(xlim)){
     xlim <- c(min(1/JUBs),max(1/JLBs))}
   if(xlim[1]>xlim[2]){xlim <- rev(xlim)}
-  plot(1,type="n",xlim=xlim,ylim=c(ages[1],tail(ages,1)),log='x',xlab="1/J",ylab=ylab,xaxt='n',yaxt=ifelse(removeyaxis,"n","s"))
+  plot(1,type="n",xlim=xlim,ylim=c(ages[1],tail(ages,1)),log='x',xlab="1/J",ylab=ylab,xaxt='n',yaxt=ifelse(removeyaxis,"n","s"),...)
   if(!is.na(linesevery)){#horizontal lines depicting time
     for(t in seq(0,max(ages)+linesevery,linesevery)){
       graphics::lines(c(xlim[1]/10,xlim[2]*10),c(t,t),col="grey90")}}
