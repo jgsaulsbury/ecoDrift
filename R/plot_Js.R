@@ -37,7 +37,7 @@
 #' lines(c(-1,10),c(tslength/2,tslength/2),lty='dashed',lwd=1) #plot point where J switches
 #' plot_Js(timeseries,ages) #fit rate through time
 #' lines(c(1E-10,1E-1),c(tslength/2,tslength/2),lty='dashed',lwd=1)
-plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtime=1,searchinterval=c(1,9),ylab="Age, years",removeyaxis=FALSE){
+plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtime=1,searchinterval=c(1,9),ylab="Age, years",removeyaxis=FALSE,...){
   if(is.list(occs)){
     occs <- as.matrix(occs)}
   xages <- (head(ages,-1) + tail(ages,-1))/2 #midpoint of each transition
