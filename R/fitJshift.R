@@ -35,6 +35,7 @@
 #' @export
 #'
 #' @examples
+#' set.seed(1)
 #' #first simulate a timeseries with an increase in J halfway through
 #' J1 <- 1000 #first half of TS
 #' J2 <- 10000 #second half of TS

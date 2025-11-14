@@ -53,6 +53,7 @@ shift ages within the confidence interval that are outside the 95\% confidence
 interval if the likelihood surface is not convex.
 }
 \examples{
+set.seed(1)
 #first simulate a timeseries with an increase in J halfway through
 J1 <- 1000 #first half of TS
 J2 <- 10000 #second half of TS
