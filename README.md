@@ -4,7 +4,6 @@
 # ecoDrift
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 Contains functions for modeling change in community composition with
@@ -34,7 +33,7 @@ every <- 200 #sample every 200 timesteps...
 ss <- 1000 #...and sample 1,000 individuals (with replacement) when you do
 ages <- seq(0,tslength,every)
 set.seed(1)
-X <- simNT(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
+X <- simDrift(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
 plot_spindles(X$simulation,X$times)
 ```
 
@@ -48,8 +47,8 @@ fitJ(occs=X$simulation,ages=X$times,CI=TRUE)
 #> [1] 499.2732
 #> 
 #> $J
-#> [1] 42983.42
+#> [1] 42987.46
 #> 
 #> $CI
-#> [1] 32696.11 56838.25
+#> [1] 32696.41 56838.41
 ```

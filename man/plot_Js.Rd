@@ -13,7 +13,8 @@ plot_Js(
   generationtime = 1,
   searchinterval = c(1, 9),
   ylab = "Age, years",
-  removeyaxis = FALSE
+  removeyaxis = FALSE,
+  ...
 )
 }
 \arguments{
@@ -29,14 +30,21 @@ oldest to youngest.}
 \item{linesevery}{value indicating the interval at which to draw horizontal gridlines.
 Default is NA (don't draw them).}
 
+\item{sampled}{boolean indicating whether occs represents a sampled
+community (TRUE) or instead represents true species abundances (FALSE).}
+
 \item{generationtime}{passed to fitJ().}
 
 \item{searchinterval}{passed to fitJ()}
 
+\item{ylab}{Label for y axis, passed to plotting function. Default is "Age, years".}
+
+\item{removeyaxis}{boolean indicating whether to plot without a y-axis.}
+
 \item{...}{additional plotting parameters passed to plot().}
 }
 \value{
-plots rate through time.
+Plots rate through time.
 }
 \description{
 Use to visualize how the rate of turnover changes across a community change
@@ -51,8 +59,10 @@ every <- 5
 nsp <- 8
 ss <- 1000000
 ages <- seq(0,tslength,every)
-timeseries1 <- simDrift(startingabs=rep(J1/nsp,nsp),ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #first half
-timeseries2 <- simDrift(startingabs=timeseries1[1,]*J2/ss,ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #second half
+timeseries1 <- simDrift(startingabs=rep(J1/nsp,nsp),ts=ages[1:(length(ages)/2 + 1)],
+  ss=ss)$simulation #first half
+timeseries2 <- simDrift(startingabs=timeseries1[1,]*J2/ss,ts=ages[1:(length(ages)/2 + 1)],
+  ss=ss)$simulation #second half
 timeseries <- rbind(timeseries2,timeseries1[-1,])
 par(mfrow=c(1,2))
 plot_spindles(timeseries,ages,plot.ss=FALSE)

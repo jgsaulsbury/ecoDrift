@@ -18,7 +18,7 @@
 #'
 #' @importFrom cbinom dcbinom
 #'
-#' @returns loglik value.
+#' @returns Returns loglik value.
 #' @export
 #'
 #' @examples

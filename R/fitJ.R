@@ -25,12 +25,12 @@
 #' using the chi-square lookup table to calculate confidence intervals. Should be
 #' 1 unless calculating a simultaneous confidence interval.
 #'
-#' @returns a list containing "loglik", "J", and (optionally) "CI"
+#' @returns Returns a list containing "loglik", "J", and (optionally) "CI".
 #' @export
 #'
 #' @examples
-#' mat <- matrix(data=c(520,1200,1600,1090,900,401,930,610,355),nrow=3)
-#' fitJ(occs=mat,ages=c(200,100,0),CI=TRUE)
+#' sim <- simDrift(startingabs=rep(1000,5),ts=c(0,100,200,300,400,500),ss=1000)
+#' fitJ(occs=sim$simulation,ages=sim$times,CI=TRUE)
 fitJ <- function(occs,ages,sampled=TRUE,generationtime=1,CI=FALSE,searchinterval=c(1,9),CI.df=1){
   if(dim(occs)[1] != length(ages)){stop("'ages' must have length equal to the number of rows of 'occs'")}
   op <- suppressWarnings(stats::optimize(xxprob,interval=c(searchinterval[1],searchinterval[2]),occs=occs,ages=ages,sampled=sampled,generationtime=generationtime,maximum=TRUE))

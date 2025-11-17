@@ -11,10 +11,10 @@
 #' @param metacommunity relative abundances for species in the static metacommunity.
 #' If none provided, uses the starting abundances for the local community.
 #'
-#' @returns a list with entries "simulation", a matrix containing the output of
+#' @returns Returns a list with entries "simulation", a matrix containing the output of
 #' the simulation with a row for each time slice (time goes from bottom to top)
-#' and each column is a species; and "times", a vector that passes on the value of
-#' ts.
+#' and a column for each species; and "times", a vector that passes on the value of
+#' ts for convenience.
 #'
 #' @export
 #'

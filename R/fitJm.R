@@ -15,19 +15,21 @@
 #' oldest to youngest.
 #' @param sampled boolean indicating whether occs represents a sampled
 #' community (TRUE) or instead represents true species abundances (FALSE).
+#' @param metacommunity vector of relative abundances of species in the metacommunity.
+#' If this doesn't sum to 1, will be normalized to sum to 1.
 #' @param generationtime time between generations, in years.
-#' @param lowerbounds vector of length 2 giving the lower search bounds for log10J and log10m.
-#' @param upperbounds vector of length 2 giving the upper search bounds for log10J and log10m.
 #'
 #' @returns a list containing "loglik", "J", and "m"
-#' @export
 #'
 #' @examples
+#' #simulate under neutral theory with migration
 #' set.seed(10)
-#' sim <- simNT(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.001,ss=1000) #simulate under neutral theory with migration
-#' fitJm(occs=sim$simulation,ages=sim$times,metacommunity=rep(0.25,4))
-fitJm <- function(occs,ages,sampled=TRUE,metacommunity=NA,generationtime=1){
+#' sim <- simDrift(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.001,ss=1000)
+#' ecoDrift:::fitJm(occs=sim$simulation,ages=sim$times,metacommunity=rep(0.25,4))
+fitJm <- function(occs,ages,metacommunity,sampled=TRUE,generationtime=1){
+  metacommunity <- metacommunity/sum(metacommunity) #make it sum to 1
   if(dim(occs)[1] != length(ages)){stop("'ages' must have length equal to the number of rows of 'occs'")}
+  if(dim(occs)[2] != length(metacommunity)){stop("length of 'metacommunity' must be equal to number of columns in 'occs'")}
   op <- stats::optim(par=c(5,-3),fn=xxprobm,method="Nelder-Mead",control=list(fnscale=-1),occs=occs,ages=ages,
                      sampled=sampled,metacommunity=metacommunity,generationtime=generationtime)
   out <- list("loglik"=op$value,"J"=10^op$par[1],"m"=10^op$par[2])

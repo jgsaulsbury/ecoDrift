@@ -18,7 +18,7 @@
 #' @param ylab value indicating what to print on the y axis. Default is "Age, years"
 #' @param removeyaxis boolean indicating whether to remove the y axis from the plot,
 #' allowing the user to plot a custom y axis after the fact. Default is FALSE.
-#' @returns plots spindle diagrams depicting the relative abundance of each species
+#' @returns Plots spindle diagrams depicting the relative abundance of each species
 #' through the timeseries.
 #' @export
 #'
@@ -37,7 +37,7 @@ plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years"
   occs.prop <- occs.prop[,rev(order(apply(occs.prop,MARGIN=2,FUN=max)))] #resort occs.prop by peak relab
   peak.relabs <- apply(occs.prop, MARGIN=2, FUN=max) #stores peak relab of each sp
   plot(1,type='n',xlim=c(0,sum(peak.relabs)+buffer*(length(peak.relabs)-1)),
-       ylim=c(ages[1],tail(ages,1)),xaxt='n',ylab=ylab,xlab="",yaxt=ifelse(removeyaxis,"n","s"))
+       ylim=c(ages[1],utils::tail(ages,1)),xaxt='n',ylab=ylab,xlab="",yaxt=ifelse(removeyaxis,"n","s"))
   if(plot.ss){
     graphics::mtext("Samples:",cex=0.7,line=0,adj=1.03,col='grey')
     graphics::par(las=2)

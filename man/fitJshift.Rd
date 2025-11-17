@@ -7,6 +7,7 @@
 fitJshift(
   occs,
   ages,
+  liksurf = FALSE,
   sampled = TRUE,
   generationtime = 1,
   CI = FALSE,
@@ -22,6 +23,9 @@ at the bottom to youngest at the top.}
 oldest to youngest. Numbers can run from high to low (e.g., millions of years
 ago) or from low to high (e.g., years from the start of a simulation)}
 
+\item{liksurf}{boolean indicating whether to include the likelihood surface
+for the shift age at each point along ages.}
+
 \item{sampled}{boolean indicating whether occs represents a sampled
 community (TRUE) or instead represents true species abundances (FALSE).}
 
@@ -33,11 +37,11 @@ CIfunc_J to find 95\% confidence intervals for J. Provides simultaneous confiden
 intervals: in theory, for a 95\% confidence interval there is a 95\% chance that
 all parameter estimates are correct.}
 
-\item{searchinterval_J}{consider values of log10J within this interval.}
+\item{searchinterval}{consider values of log10J within this interval.}
 }
 \value{
-a list containing "loglik", "J1", "J2", "shiftage" and (optionally) three confidence
-intervals: "CI_J1", "CI_J2", and "CI_shiftage"
+Returns a list containing "loglik", "J1", "J2", "shiftage" and (optionally)
+three confidence intervals: "CI_J1", "CI_J2", and "CI_shiftage"
 }
 \description{
 Takes a time-series and fits a 3-parameter model where J shifts from one value
@@ -58,12 +62,14 @@ set.seed(1)
 J1 <- 1000 #first half of TS
 J2 <- 10000 #second half of TS
 tslength <- 500
-every <- 10
+every <- 25
 nsp <- 8
 ss <- 1000000
 ages <- seq(0,tslength,every)
-timeseries1 <- simDrift(startingabs=rep(J1/nsp,nsp),ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #first half
-timeseries2 <- simDrift(startingabs=timeseries1[1,]*J2/ss,ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #second half
+timeseries1 <- simDrift(startingabs=rep(J1/nsp,nsp),
+  ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #first half
+timeseries2 <- simDrift(startingabs=timeseries1[1,]*J2/ss,
+  ts=ages[1:(length(ages)/2 + 1)],ss=ss)$simulation #second half
 timeseries <- rbind(timeseries2,timeseries1[-1,])
 par(mfrow=c(1,2))
 plot_spindles(timeseries,ages,plot.ss=FALSE)
@@ -77,7 +83,8 @@ fit <- fitJshift(timeseries,ages,CI=TRUE)
 polygon(x=1/c(fit$CI_J1[2],fit$CI_J1[2],fit$CI_J2[2],fit$CI_J2[2],
   fit$CI_J2[1],fit$CI_J2[1],fit$CI_J1[1],fit$CI_J1[1]),
   y=c(ages[1],fit$CI_shiftage[1],fit$CI_shiftage[1],ages[length(ages)],
-  ages[length(ages)],fit$CI_shiftage[2],fit$CI_shiftage[2],ages[1]),border=NA,col=rgb(0.7, 0.7, 0.7, 0.5))
+  ages[length(ages)],fit$CI_shiftage[2],fit$CI_shiftage[2],ages[1]),
+  border=NA,col=rgb(0.7, 0.7, 0.7, 0.5))
 lines(1/c(fit$CI_J1[2],fit$CI_J1[2],fit$CI_J2[2],fit$CI_J2[2]),
   c(ages[1],fit$CI_shiftage[1],fit$CI_shiftage[1],ages[length(ages)]),lwd=1,col="grey50")
 lines(1/c(fit$CI_J2[1],fit$CI_J2[1],fit$CI_J1[1],fit$CI_J1[1]),

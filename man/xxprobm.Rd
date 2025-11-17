@@ -49,13 +49,17 @@ time slice, the function needs to be given a generation time to know how many
 generations separate each adjacent pair of time slices. Default is 1 year.
 }
 \examples{
-library(comprehenr)
 set.seed(10)
-sim <- simNT(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.005,ss=10000) #simulate under neutral theory with migration
+#simulate under neutral theory with migration
+sim <- simDrift(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.005,ss=10000)
 par(mfrow=c(1,2))
 plot_spindles(occs=sim$simulation,ages=sim$times,plot.ss=FALSE)
 #plot likelihood surface for migration rate
 ms <- seq(-7,-1,0.1) #get likelihood for these values of m
-plot(10**ms,comprehenr::to_vec(for(i in ms) xxprobm(log10Jm = c(log10(4000),i),occs=sim$simulation,ages=sim$times,sampled=TRUE)),ylim=c(100,300),xlab="m",ylab="loglik",type='l',log='x')
+liks <- c()
+for(i in ms){
+  liks <- c(liks,
+    ecoDrift:::xxprobm(log10Jm = c(log10(4000),i),occs=sim$simulation,ages=sim$times,sampled=TRUE))}
+plot(10**ms,liks,ylim=c(100,300),xlab="m",ylab="loglik",type='l',log='x')
 lines(c(0.005,0.005),c(0,400),lty='dashed') #true m
 }

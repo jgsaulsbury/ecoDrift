@@ -19,10 +19,10 @@ simDrift(startingabs, ts, ss = NA, m = 0, metacommunity = NA)
 If none provided, uses the starting abundances for the local community.}
 }
 \value{
-a list with entries "simulation", a matrix containing the output of
+Returns a list with entries "simulation", a matrix containing the output of
 the simulation with a row for each time slice (time goes from bottom to top)
-and each column is a species; and "times", a vector that passes on the value of
-ts.
+and a column for each species; and "times", a vector that passes on the value of
+ts for convenience.
 }
 \description{
 Simulate drift in a neutral community with non-overlapping generations. Includes

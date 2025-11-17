@@ -22,7 +22,7 @@ community (TRUE) or instead represents true species abundances (FALSE).}
 \item{generationtime}{time between generations, in years.}
 }
 \value{
-loglik value.
+Returns loglik value.
 }
 \description{
 Gives the likelihood of a community composition timeseries under Hubbell's
@@ -38,5 +38,5 @@ generations separate each adjacent pair of time slices. Default is 1 year.
 }
 \examples{
 mat <- matrix(data=c(52,12,160,109,30,401,93,31,355),nrow=3)
-xxprob(log10J=5,occs=mat,ages=c(200,100,0))
+xxprob(log10J=5,occs=mat,ages=c(200,100,0)) #7.257928
 }

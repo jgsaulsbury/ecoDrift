@@ -4,7 +4,7 @@
 \alias{fitJm}
 \title{Find the maximum-likelihood values of J and m for a community change dataset}
 \usage{
-fitJm(occs, ages, sampled = TRUE, metacommunity = NA, generationtime = 1)
+fitJm(occs, ages, metacommunity, sampled = TRUE, generationtime = 1)
 }
 \arguments{
 \item{occs}{matrix of the number of observations in each species at each time.
@@ -14,14 +14,13 @@ at the bottom to youngest at the top.}
 \item{ages}{vector containing the ages of each time slice, in years, from
 oldest to youngest.}
 
+\item{metacommunity}{vector of relative abundances of species in the metacommunity.
+If this doesn't sum to 1, will be normalized to sum to 1.}
+
 \item{sampled}{boolean indicating whether occs represents a sampled
 community (TRUE) or instead represents true species abundances (FALSE).}
 
 \item{generationtime}{time between generations, in years.}
-
-\item{lowerbounds}{vector of length 2 giving the lower search bounds for log10J and log10m.}
-
-\item{upperbounds}{vector of length 2 giving the upper search bounds for log10J and log10m.}
 }
 \value{
 a list containing "loglik", "J", and "m"
@@ -35,7 +34,8 @@ the community are filled by migrants from a static metacommunity.
 optim() takes the midpoint of the J and m search bounds as the starting value.
 }
 \examples{
+#simulate under neutral theory with migration
 set.seed(10)
-sim <- simNT(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.001,ss=1000) #simulate under neutral theory with migration
-fitJm(occs=sim$simulation,ages=sim$times,metacommunity=rep(0.25,4))
+sim <- simDrift(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.001,ss=1000)
+ecoDrift:::fitJm(occs=sim$simulation,ages=sim$times,metacommunity=rep(0.25,4))
 }

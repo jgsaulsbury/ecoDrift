@@ -22,12 +22,12 @@
 #' community (TRUE) or instead represents true species abundances (FALSE).
 #' @param generationtime time between generations, in years.
 #'
-#' @returns loglik value.
+#' @returns Returns loglik value.
 #' @export
 #'
 #' @examples
 #' mat <- matrix(data=c(52,12,160,109,30,401,93,31,355),nrow=3)
-#' xxprob(log10J=5,occs=mat,ages=c(200,100,0))
+#' xxprob(log10J=5,occs=mat,ages=c(200,100,0)) #7.257928
 xxprob <- function(log10J,occs,ages,sampled=TRUE,generationtime=1){
   if(!is.list(ages)){ #if there's just one timeseries
     occs <- list(occs) #make it the only member of a list

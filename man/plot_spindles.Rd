@@ -33,7 +33,7 @@ Default is NA (don't draw them).}
 allowing the user to plot a custom y axis after the fact. Default is FALSE.}
 }
 \value{
-plots spindle diagrams depicting the relative abundance of each species
+Plots spindle diagrams depicting the relative abundance of each species
 through the timeseries.
 }
 \description{

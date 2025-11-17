@@ -17,7 +17,7 @@ xprob(n1, n2, Jt, ss = NA)
 times for n1 and n2. If a single value given, assumes it applies to both n1 and n2.}
 }
 \value{
-loglik value.
+Returns loglik value.
 }
 \description{
 Gives the log-likelihood of a single observed transition in community composition
