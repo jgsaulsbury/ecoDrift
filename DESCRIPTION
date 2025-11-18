@@ -1,12 +1,13 @@
 Package: ecoDrift
-Title: Model Change in Community Composition with Hubbell's Neutral Theory
+Title: Modeling Change in Community Composition with Hubbell's Neutral Theory
 Version: 0.0.0.9000
 Authors@R: 
-    person("James", "Saulsbury", , "jgsaulsbury@gmail.com", role = c("aut", "cre"))
-Description: Functions for fitting neutral (drift) models to timeseries of fossil
-  community composition. Useful for measuring rates of ecological change, 
-  fitting a variety of drift models to data, and visualizing relative abundances
-  and fitted models.
+    person("James", "Saulsbury", , "jgsaulsbury@gmail.com", role = c("aut", "cre", 
+    "cph"))
+Description: Fit neutral (drift) models to timeseries of fossil community composition. 
+  Based on a simple version of Hubbell's (2001) Unified Neutral Theory of Biodiversity.
+  Useful for measuring rates of ecological change, fitting a variety of drift models
+  to data, and visualizing relative abundances and fitted models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

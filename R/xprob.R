@@ -22,7 +22,7 @@
 #' @export
 #'
 #' @examples
-#'xprob(n1=c(0.1,0.1,0.8),n2=c(0.2,0.3,0.5),Jt=10,ss=c(1000,1000)) #-0.20906
+#' xprob(n1=c(0.1,0.1,0.8),n2=c(0.2,0.3,0.5),Jt=10,ss=c(1000,1000)) #-0.20906
 #'
 xprob <- function(n1,n2,Jt,ss=NA){
   #error handling
