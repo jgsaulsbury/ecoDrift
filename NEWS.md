@@ -1,3 +1,3 @@
-# ecoDrift (development version)
+# ecoDrift 1.0.0
 
 * Initial CRAN submission.

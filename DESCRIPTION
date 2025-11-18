@@ -1,6 +1,6 @@
 Package: ecoDrift
 Title: Modeling Change in Community Composition with Hubbell's Neutral Theory
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("James", "Saulsbury", , "jgsaulsbury@gmail.com", role = c("aut", "cre", 
     "cph"))
