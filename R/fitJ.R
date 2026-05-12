@@ -9,11 +9,13 @@
 #' This is fine, and suppressWarnings() just keeps this quiet.
 #'
 #'
-#' @param occs matrix of the number of observations in each species at each time.
-#' One column for each species, one row for each time slice. Time goes from oldest
-#' at the bottom to youngest at the top.
+#' @param occs matrix of the number of observations in each species at each time,
+#' or else a list containing several such matrices.
+#' In each matrix there is one column per species and one row per time slice.
+#' Time goes from oldest at the bottom to youngest at the top.
 #' @param ages vector containing the ages of each time slice, in years, from
-#' oldest to youngest. Numbers can run from high to low (e.g., millions of years
+#' oldest to youngest, or else a list of such vectors if there are multiple
+#' occurrence matrices. Numbers can run from high to low (e.g., millions of years
 #' ago) or from low to high (e.g., years from the start of a simulation).
 #' @param sampled boolean indicating whether occs represents a sampled
 #' community (TRUE) or instead represents true species abundances (FALSE).
@@ -32,7 +34,6 @@
 #' sim <- simDrift(startingabs=rep(1000,5),ts=c(0,100,200,300,400,500),ss=1000)
 #' fitJ(occs=sim$simulation,ages=sim$times,CI=TRUE)
 fitJ <- function(occs,ages,sampled=TRUE,generationtime=1,CI=FALSE,searchinterval=c(1,9),CI.df=1){
-  if(dim(occs)[1] != length(ages)){stop("'ages' must have length equal to the number of rows of 'occs'")}
   op <- suppressWarnings(stats::optimize(xxprob,interval=c(searchinterval[1],searchinterval[2]),occs=occs,ages=ages,sampled=sampled,generationtime=generationtime,maximum=TRUE))
   out <- list("loglik"=op$objective,"J"=10^op$maximum)
   if(CI){
