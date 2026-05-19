@@ -26,20 +26,21 @@
 #' @param CI.df integer giving the number of degrees of freedom to use when
 #' using the chi-square lookup table to calculate confidence intervals. Should be
 #' 1 unless calculating a simultaneous confidence interval.
-#'
+#' @param ignore.ext boolean indicating whether transitions that end in 0 should be excluded
+#' from likelihood calculation. FALSE by default. Passed to xxprob.
 #' @returns Returns a list containing "loglik", "J", and (optionally) "CI".
 #' @export
 #'
 #' @examples
 #' sim <- simDrift(startingabs=rep(1000,5),ts=c(0,100,200,300,400,500),ss=1000)
 #' fitJ(occs=sim$simulation,ages=sim$times,CI=TRUE)
-fitJ <- function(occs,ages,sampled=TRUE,generationtime=1,CI=FALSE,searchinterval=c(1,9),CI.df=1){
-  op <- suppressWarnings(stats::optimize(xxprob,interval=c(searchinterval[1],searchinterval[2]),occs=occs,ages=ages,sampled=sampled,generationtime=generationtime,maximum=TRUE))
+fitJ <- function(occs,ages,sampled=TRUE,generationtime=1,CI=FALSE,searchinterval=c(1,9),CI.df=1,ignore.ext=FALSE){
+  op <- suppressWarnings(stats::optimize(xxprob,interval=c(searchinterval[1],searchinterval[2]),occs=occs,ages=ages,sampled=sampled,generationtime=generationtime,ignore.ext=ignore.ext,maximum=TRUE))
   out <- list("loglik"=op$objective,"J"=10^op$maximum)
   if(CI){
     left <- suppressWarnings(stats::optimize(CIfunc_J,interval=c(searchinterval[1],log10(out$J)),occs=occs,ages=ages,ML=out$loglik,
-                            sampled=sampled,generationtime=generationtime,CI.df=CI.df,maximum=FALSE))$minimum
+                            sampled=sampled,generationtime=generationtime,CI.df=CI.df,ignore.ext=ignore.ext,maximum=FALSE))$minimum
     right <- suppressWarnings(stats::optimize(CIfunc_J,interval=c(log10(out$J),searchinterval[2]),occs=occs,ages=ages,ML=out$loglik,
-                             sampled=sampled,generationtime=generationtime,CI.df=CI.df,maximum=FALSE))$minimum
+                             sampled=sampled,generationtime=generationtime,CI.df=CI.df,ignore.ext=ignore.ext,maximum=FALSE))$minimum
     out$CI <- 10^c(left,right)}
   return(out)}

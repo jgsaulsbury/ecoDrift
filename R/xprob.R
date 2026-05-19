@@ -15,8 +15,8 @@
 #' @param Jt ratio of J (community size) to t (# generations).
 #' @param ss single value or vector of length 2 giving number of samples at
 #' times for n1 and n2. If a single value given, assumes it applies to both n1 and n2.
-#' @param ignore.ext boolean indicating whether transitions that end in 0 should be excluded
-#' from likelihood calculation. TRUE by default.
+#' @param ignore.ext boolean indicating whether transitions that end in 0 or 1
+#' should be excluded from likelihood calculation. FALSE by default.
 #'
 #' @importFrom cbinom dcbinom
 #'
@@ -26,7 +26,7 @@
 #' @examples
 #' xprob(n1=c(0.1,0.1,0.8),n2=c(0.2,0.3,0.5),Jt=10,ss=c(1000,1000)) #-0.20906
 #'
-xprob <- function(n1,n2,Jt,ss=NA,ignore.ext=TRUE){
+xprob <- function(n1,n2,Jt,ss=NA,ignore.ext=FALSE){
   #error handling
   tol <- 1E-7
   if(sum(n1)<=0|sum(n2)<=0|sum(n1)>1+tol|sum(n2)>1+tol){
@@ -47,10 +47,25 @@ xprob <- function(n1,n2,Jt,ss=NA,ignore.ext=TRUE){
     n1 <- n1[-length(n1)]
     n2 <- n2[-length(n2)]}
   if(ignore.ext){
-    n1 <- n1[!n2==0];n2 <- n2[!n2==0]} #remove indices where n2 is zero (zeros in n1 removed in previous step)
-  n2 <- n2*size + 0.5 #moving onto scale of cbinom
-  out <- ifelse(length(n1)==0,0, #check to make sure there is at least one transition left
-                cbinom::dcbinom(x=n2[1],size=size,prob=n1[1],log=T)+log(size)) #for taxon 1 (multiplied to make sense for prob densities)
+    n1 <- n1[!(n2==0|n2==1)];n2 <- n2[!(n2==0|n2==1)]} #remove indices where n2 is zero (zeros in n1 removed in previous step)
+  n2.adj <- n2*size + 0.5 #moving onto scale of cbinom (n2.adj)
+  #for taxon 1:
+  if(length(n1)==0){ #check to make sure there is at least one transition left
+    out <- 0
+  } else if(n2[1]==0){ #otherwise if species goes locally extinct...
+    out <- cbinom::pcbinom(q=0.5,size=size,prob=n1[1],log=T)
+  } else if(n2[1]==1){ #otherwise if species achieves monodominance...
+    out <- log(1-cbinom::pcbinom(q=size+0.5,size=size,prob=n1[1]))
+  } else { #otherwise...
+    out <- cbinom::dcbinom(x=n2.adj[1],size=size,prob=n1[1],log=T)+log(size)} #multiplied to make sense for prob densities on [0,1] interval
   for(i in seq_len(length(n1))[-1]){ #for every other taxon i
-      out <- out + dcbinom(x=n2[i],size=size-sum(n2[1:i-1]-0.5),prob=n1[i]/(1-sum(n1[1:i-1])),log=T)+log(size)}
+    if(n2[i]==0){ #if species i goes locally extinct...
+      out <- out + cbinom::pcbinom(q=0.5,size=size-sum(n2.adj[1:i-1]-0.5),
+                          prob=n1[i]/(1-sum(n1[1:i-1])),log=T)
+    } else if(n2[i]==1){ #else if species i achieves monodominance...
+      out <- out + log(1-cbinom::pcbinom(q=size-sum(n2.adj[1:i-1]-0.5)+0.5,size=size-sum(n2.adj[1:i-1]-0.5),
+                          prob=n1[i]/(1-sum(n1[1:i-1]))))
+    } else{ #otherwise...
+      out <- out + cbinom::dcbinom(x=n2.adj[i],size=size-sum(n2.adj[1:i-1]-0.5),
+                          prob=n1[i]/(1-sum(n1[1:i-1])),log=T)+log(size)}}
   return(out)}

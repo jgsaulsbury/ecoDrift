@@ -4,7 +4,7 @@
 \alias{xprob}
 \title{Probability of a single transition under neutral theory without migration}
 \usage{
-xprob(n1, n2, Jt, ss = NA)
+xprob(n1, n2, Jt, ss = NA, ignore.ext = FALSE)
 }
 \arguments{
 \item{n1}{vector of relative abundances at start of transition.}
@@ -15,6 +15,9 @@ xprob(n1, n2, Jt, ss = NA)
 
 \item{ss}{single value or vector of length 2 giving number of samples at
 times for n1 and n2. If a single value given, assumes it applies to both n1 and n2.}
+
+\item{ignore.ext}{boolean indicating whether transitions that end in 0 or 1
+should be excluded from likelihood calculation. FALSE by default.}
 }
 \value{
 Returns loglik value.
@@ -27,7 +30,7 @@ t (# generations).
 \details{
 Used by xxprob. Sums of n1 and n2 must each be in the interval (0,1]. Allows
 for incomplete sampling; if nothing is given for ss, assumes n1 and n2 represent
-true relative abundances.
+true relative abundances. By default ignores transitions that end in 0.
 }
 \examples{
 xprob(n1=c(0.1,0.1,0.8),n2=c(0.2,0.3,0.5),Jt=10,ss=c(1000,1000)) #-0.20906

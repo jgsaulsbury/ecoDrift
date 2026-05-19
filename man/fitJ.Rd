@@ -11,16 +11,19 @@ fitJ(
   generationtime = 1,
   CI = FALSE,
   searchinterval = c(1, 9),
-  CI.df = 1
+  CI.df = 1,
+  ignore.ext = FALSE
 )
 }
 \arguments{
-\item{occs}{matrix of the number of observations in each species at each time.
-One column for each species, one row for each time slice. Time goes from oldest
-at the bottom to youngest at the top.}
+\item{occs}{matrix of the number of observations in each species at each time,
+or else a list containing several such matrices.
+In each matrix there is one column per species and one row per time slice.
+Time goes from oldest at the bottom to youngest at the top.}
 
 \item{ages}{vector containing the ages of each time slice, in years, from
-oldest to youngest. Numbers can run from high to low (e.g., millions of years
+oldest to youngest, or else a list of such vectors if there are multiple
+occurrence matrices. Numbers can run from high to low (e.g., millions of years
 ago) or from low to high (e.g., years from the start of a simulation).}
 
 \item{sampled}{boolean indicating whether occs represents a sampled
@@ -36,6 +39,9 @@ on the maximum-likelihood estimate of J. Uses function CIfunc_J.}
 \item{CI.df}{integer giving the number of degrees of freedom to use when
 using the chi-square lookup table to calculate confidence intervals. Should be
 1 unless calculating a simultaneous confidence interval.}
+
+\item{ignore.ext}{boolean indicating whether transitions that end in 0 should be excluded
+from likelihood calculation. FALSE by default. Passed to xxprob.}
 }
 \value{
 Returns a list containing "loglik", "J", and (optionally) "CI".

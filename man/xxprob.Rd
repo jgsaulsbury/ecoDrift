@@ -4,22 +4,34 @@
 \alias{xxprob}
 \title{Probability of a set of transitions under neutral theory}
 \usage{
-xxprob(log10J, occs, ages, sampled = TRUE, generationtime = 1)
+xxprob(
+  log10J,
+  occs,
+  ages,
+  sampled = TRUE,
+  generationtime = 1,
+  ignore.ext = FALSE
+)
 }
 \arguments{
 \item{log10J}{log J (community size). Easier for fitJ() to optimize in log space.}
 
-\item{occs}{matrix of the number of observations in each species at each time.
-One column for each species, one row for each time slice. Time goes from oldest
-at the bottom to youngest at the top.}
+\item{occs}{matrix of the number of observations in each species at each time,
+or else a list containing several such matrices.
+In each matrix there is one column per species and one row per time slice.
+Time goes from oldest at the bottom to youngest at the top.}
 
 \item{ages}{vector containing the ages of each time slice, in years, from
-oldest to youngest.}
+oldest to youngest, or else a list of such vectors if there are multiple
+occurrence matrices.}
 
 \item{sampled}{boolean indicating whether occs represents a sampled
 community (TRUE) or instead represents true species abundances (FALSE).}
 
 \item{generationtime}{time between generations, in years.}
+
+\item{ignore.ext}{boolean indicating whether transitions that end in 0 should be excluded
+from likelihood calculation. FALSE by default. Passed to xprob.}
 }
 \value{
 Returns loglik value.
