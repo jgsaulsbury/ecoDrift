@@ -36,6 +36,7 @@ xxprob <- function(log10J,occs,ages,sampled=TRUE,generationtime=1,ignore.ext=FAL
   if(!is.list(occs)){ #if there's just one timeseries
     occs <- list(occs) #make it the only member of a list
     ages <- list(ages)} #and do the same to ages
+  if(is.list(occs) & !is.list(ages)){stop("occurrence matrix is in list form but age vector is not, please convert occurrence matrix to matrix format")}
   if(length(occs)!=length(ages)){stop("number of occurrence matrices and ages vectors do not match")}
   loglik <- 0
   for(i in seq(length(occs))){ #for each member of the list of occurrence tables
@@ -44,9 +45,9 @@ xxprob <- function(log10J,occs,ages,sampled=TRUE,generationtime=1,ignore.ext=FAL
     if(dim(occ)[1] != length(age)){stop(paste("age vector",i,"does not match number of rows in occurrence matrix",i))}
     ss <- rowSums(occ)
     occs.prop <-  occ/ss #from occurrences to proportional abundance
-    for(i in rev(seq(dim(occ)[1]-1))){ #for every transition (from oldest to youngest)
-      t = abs(age[i+1]-age[i])/generationtime
+    for(j in rev(seq(dim(occ)[1]-1))){ #for every transition (from oldest to youngest)
+      t = abs(age[dim(occ)[1]-j]-age[dim(occ)[1]-j+1])/generationtime
       loglik <- loglik + ifelse(sampled,
-                    xprob(n1=as.numeric(occs.prop[i+1,]),n2=as.numeric(occs.prop[i,]),Jt=(10^log10J)/t,ss=c(ss[i+1],ss[i]),ignore.ext = ignore.ext),
-                    xprob(n1=as.numeric(occs.prop[i+1,]),n2=as.numeric(occs.prop[i,]),Jt=(10^log10J)/t,ss=NA,ignore.ext = ignore.ext))}}
+                    xprob(n1=as.numeric(occs.prop[j+1,]),n2=as.numeric(occs.prop[j,]),Jt=(10^log10J)/t,ss=c(ss[j+1],ss[j]),ignore.ext = ignore.ext),
+                    xprob(n1=as.numeric(occs.prop[j+1,]),n2=as.numeric(occs.prop[j,]),Jt=(10^log10J)/t,ss=NA,ignore.ext = ignore.ext))}}
   return(loglik)}

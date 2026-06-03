@@ -43,7 +43,7 @@ xprob <- function(n1,n2,Jt,ss=NA,ignore.ext=FALSE){
   order <- rev(order(n1)) #sort by abundance of n1
   n1 <- n1[order]
   n2 <- n2[order]
-  while(sum(n1) > 1-tol){ #remove last species if sum of n1 is 1, not needed for calculation
+  while(sum(n1) > 1-tol|sum(n2) > 1-tol){ #remove last species if sum of n1 or n2 is 1, not needed for calculation
     n1 <- n1[-length(n1)]
     n2 <- n2[-length(n2)]}
   if(ignore.ext){
@@ -60,12 +60,13 @@ xprob <- function(n1,n2,Jt,ss=NA,ignore.ext=FALSE){
     out <- cbinom::dcbinom(x=n2.adj[1],size=size,prob=n1[1],log=T)+log(size)} #multiplied to make sense for prob densities on [0,1] interval
   for(i in seq_len(length(n1))[-1]){ #for every other taxon i
     if(n2[i]==0){ #if species i goes locally extinct...
-      out <- out + cbinom::pcbinom(q=0.5,size=size-sum(n2.adj[1:i-1]-0.5),
-                          prob=n1[i]/(1-sum(n1[1:i-1])),log=T)
+      out <- out + cbinom::pcbinom(q=0.5,size=size-sum(n2.adj[1:(i-1)]-0.5),
+                          prob=n1[i]/(1-sum(n1[1:(i-1)])),log=T)
     } else if(n2[i]==1){ #else if species i achieves monodominance...
-      out <- out + log(1-cbinom::pcbinom(q=size-sum(n2.adj[1:i-1]-0.5)+0.5,size=size-sum(n2.adj[1:i-1]-0.5),
-                          prob=n1[i]/(1-sum(n1[1:i-1]))))
+      out <- out + log(1-cbinom::pcbinom(q=size-sum(n2.adj[1:(i-1)]-0.5)+0.5,size=size-sum(n2.adj[1:(i-1)]-0.5),
+                          prob=n1[i]/(1-sum(n1[1:(i-1)]))))
     } else{ #otherwise...
-      out <- out + cbinom::dcbinom(x=n2.adj[i],size=size-sum(n2.adj[1:i-1]-0.5),
-                          prob=n1[i]/(1-sum(n1[1:i-1])),log=T)+log(size)}}
+      out <- out + cbinom::dcbinom(x=n2.adj[i],size=size-sum(n2.adj[1:(i-1)]-0.5),
+                          prob=n1[i]/(1-sum(n1[1:(i-1)])),log=T)+log(size)}
+    }
   return(out)}
