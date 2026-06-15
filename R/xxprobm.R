@@ -39,7 +39,7 @@
 #' liks <- c()
 #' for(i in ms){
 #'   liks <- c(liks,
-#'     ecoDrift:::xxprobm(log10Jm = c(log10(4000),i),occs=sim$simulation,ages=sim$times,sampled=TRUE))}
+#'     ecoDrift::xxprobm(log10Jm = c(log10(4000),i),occs=sim$simulation,ages=sim$times,sampled=TRUE))}
 #' plot(10**ms,liks,ylim=c(100,300),xlab="m",ylab="loglik",type='l',log='x')
 #' lines(c(0.005,0.005),c(0,400),lty='dashed') #true m
 xxprobm <- function(log10Jm,occs,ages,sampled=TRUE,metacommunity=NA,generationtime=1){

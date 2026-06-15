@@ -31,6 +31,8 @@
 #' timeseries <- simDrift(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
 #' plot_spindles(occs=timeseries$simulation,ages=timeseries$times,linesevery=100)
 plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years",removeyaxis=FALSE){
+  oldpar <- par(no.readonly = TRUE) #to preserve settings
+  on.exit(par(oldpar))
   buffer <- 0.05 #buffer between spindles
   ss <- rowSums(occs)
   occs.prop <-  occs/ss

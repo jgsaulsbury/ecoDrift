@@ -25,7 +25,7 @@
 #' #simulate under neutral theory with migration
 #' set.seed(10)
 #' sim <- simDrift(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.001,ss=1000)
-#' ecoDrift:::fitJm(occs=sim$simulation,ages=sim$times,metacommunity=rep(0.25,4))
+#' ecoDrift::fitJm(occs=sim$simulation,ages=sim$times,metacommunity=rep(0.25,4))
 fitJm <- function(occs,ages,metacommunity,sampled=TRUE,generationtime=1){
   metacommunity <- metacommunity/sum(metacommunity) #make it sum to 1
   if(dim(occs)[1] != length(ages)){stop("'ages' must have length equal to the number of rows of 'occs'")}

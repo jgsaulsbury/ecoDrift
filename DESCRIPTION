@@ -5,9 +5,10 @@ Authors@R:
     person("James", "Saulsbury", , "jgsaulsbury@gmail.com", role = c("aut", "cre", 
     "cph"))
 Description: Fit neutral (drift) models to timeseries of fossil community composition. 
-  Based on a simple version of Hubbell's (2001) Unified Neutral Theory of Biodiversity.
-  Useful for measuring rates of ecological change, fitting a variety of drift models
-  to data, and visualizing relative abundances and fitted models.
+  Based on a simple version of Hubbell's (2001) <doi:10.1890/0012-9658(2002)083[1771:TUNTOB]2.0.CO;2> 
+  Unified Neutral Theory of Biodiversity. Useful for measuring rates of ecological 
+  change, fitting a variety of drift models to data, and visualizing relative abundances 
+  and fitted models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

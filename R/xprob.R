@@ -43,7 +43,7 @@ xprob <- function(n1,n2,Jt,ss=NA,ignore.ext=FALSE){
   order <- rev(order(n1)) #sort by abundance of n1
   n1 <- n1[order]
   n2 <- n2[order]
-  while(sum(n1) > 1-tol|sum(n2) > 1-tol){ #remove last species if sum of n1 or n2 is 1, not needed for calculation
+  while(sum(n1) > 1-tol){ #remove last species if sum of n1 is 1, not needed for calculation
     n1 <- n1[-length(n1)]
     n2 <- n2[-length(n2)]}
   if(ignore.ext){
