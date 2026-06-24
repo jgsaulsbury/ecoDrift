@@ -5,7 +5,7 @@
 #Default is 95% (0.95). Returns the value of the helper function at the given logJ.
 #CI.df gives the degrees of freedom used in the chi-square lookup table. 1 is used except
 #when estimating simultaneous confidence intervals.
-CIfunc_J <- function(log10J,occs,ages,ML,confidence=0.95,sampled=TRUE,generationtime=1,CI.df=1,ignore.ext=FALSE){
+CIfunc_J <- function(log10J,occs,ages,ML,confidence=0.95,sampled=TRUE,generationtime=1,CI.df=1,handle.ext="condition"){
   diff <- stats::qchisq(p=confidence,d=CI.df)/2
-  out <- xxprob(log10J,occs,ages,sampled,generationtime,ignore.ext=ignore.ext)
+  out <- xxprob(log10J,occs,ages,sampled,generationtime,handle.ext=handle.ext)
   return(abs(ML-diff-out))}
