@@ -23,8 +23,11 @@
 #' @param sampled boolean indicating whether occs represents a sampled
 #' community (TRUE) or instead represents true species abundances (FALSE).
 #' @param generationtime time between generations, in years.
-#' @param ignore.ext boolean indicating whether transitions that end in 0 should be excluded
-#' from likelihood calculation. FALSE by default. Passed to xprob.
+#' @param handle.ext string specifying how extinction (and monodominance) should be
+#' handled. Three options: "ignore" simply passes over these transitions.
+#' "condition" returns logliks conditional on non-extinction and non-monodominance.
+#' "calculate" returns logliks that include species that hit abundance 0 or 1 in
+#' the likelihood calculation. "condition" is the default. Passed to xprob.
 #'
 #' @returns Returns loglik value.
 #' @export
@@ -32,7 +35,7 @@
 #' @examples
 #' mat <- matrix(data=c(52,12,160,109,30,401,93,31,355),nrow=3)
 #' xxprob(log10J=5,occs=mat,ages=c(200,100,0)) #7.257928
-xxprob <- function(log10J,occs,ages,sampled=TRUE,generationtime=1,ignore.ext=FALSE){
+xxprob <- function(log10J,occs,ages,sampled=TRUE,generationtime=1,handle.ext="condition"){
   if(!is.list(occs)){ #if there's just one timeseries
     occs <- list(occs) #make it the only member of a list
     ages <- list(ages)} #and do the same to ages
@@ -48,6 +51,6 @@ xxprob <- function(log10J,occs,ages,sampled=TRUE,generationtime=1,ignore.ext=FAL
     for(j in rev(seq(dim(occ)[1]-1))){ #for every transition (from oldest to youngest)
       t = abs(age[dim(occ)[1]-j]-age[dim(occ)[1]-j+1])/generationtime
       loglik <- loglik + ifelse(sampled,
-                    xprob(n1=as.numeric(occs.prop[j+1,]),n2=as.numeric(occs.prop[j,]),Jt=(10^log10J)/t,ss=c(ss[j+1],ss[j]),ignore.ext = ignore.ext),
-                    xprob(n1=as.numeric(occs.prop[j+1,]),n2=as.numeric(occs.prop[j,]),Jt=(10^log10J)/t,ss=NA,ignore.ext = ignore.ext))}}
+                    xprob(n1=as.numeric(occs.prop[j+1,]),n2=as.numeric(occs.prop[j,]),Jt=(10^log10J)/t,ss=c(ss[j+1],ss[j]),handle.ext = handle.ext),
+                    xprob(n1=as.numeric(occs.prop[j+1,]),n2=as.numeric(occs.prop[j,]),Jt=(10^log10J)/t,ss=NA,handle.ext = handle.ext))}}
   return(loglik)}

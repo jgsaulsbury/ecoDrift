@@ -19,8 +19,12 @@
 #' @param searchinterval passed to fitJ()
 #' @param ylab Label for y axis, passed to plotting function. Default is "Age, years".
 #' @param removeyaxis boolean indicating whether to plot without a y-axis.
-#' @param ignore.ext boolean indicating whether transitions that end in 0 should be excluded
-#' from likelihood calculation. FALSE by default. Passed to fit_J()
+#' @param handle.ext string specifying how extinction (and monodominance) should be
+#' handled. Three options: "ignore" simply passes over these transitions.
+#' "condition" returns logliks conditional on non-extinction and non-monodominance.
+#' "calculate" returns logliks that include species that hit abundance 0 or 1 in
+#' the likelihood calculation. "condition" is the default. Passed to fitJ.
+
 #' @param ... additional plotting parameters passed to plot().
 #'
 #' @returns Plots rate through time.
@@ -46,7 +50,7 @@
 #' plot_Js(timeseries,ages) #fit rate through time
 #' lines(c(1E-10,1E-1),c(tslength/2,tslength/2),lty='dashed',lwd=1)
 plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtime=1,
-                    searchinterval=c(1,9),ylab="Age, years",removeyaxis=FALSE,ignore.ext=FALSE,...){
+                    searchinterval=c(1,9),ylab="Age, years",removeyaxis=FALSE,handle.ext="condition",...){
   if(is.list(occs)){
     occs <- as.matrix(occs)}
   xages <- (utils::head(ages,-1) + utils::tail(ages,-1))/2 #midpoint of each transition
@@ -56,7 +60,7 @@ plot_Js <- function(occs,ages,xlim=NULL,linesevery=NA,sampled=TRUE,generationtim
   for(i in seq(length(ages)-1)){ #for every transition
     transition <- occs[(length(ages)-i):(length(ages)-i+1),]
     fit <- fitJ(occs=transition,ages=ages[i:(i+1)],sampled=sampled,generationtime=generationtime,
-                CI=TRUE,searchinterval=searchinterval,ignore.ext = ignore.ext)
+                CI=TRUE,searchinterval=searchinterval,handle.ext = handle.ext)
     Jhats <- c(Jhats,fit$J)
     JLBs <- c(JLBs,fit$CI[1])
     JUBs <- c(JUBs,fit$CI[2])}
