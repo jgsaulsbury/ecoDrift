@@ -30,6 +30,11 @@
 #' intervals: in theory, for a 95% confidence interval there is a 95% chance that
 #' all parameter estimates are correct.
 #' @param searchinterval consider values of log10J within this interval.
+#' @param handle.ext string specifying how extinction (and monodominance) should be
+#' handled. Three options: "ignore" simply passes over these transitions.
+#' "condition" returns logliks conditional on non-extinction and non-monodominance.
+#' "calculate" returns logliks that include species that hit abundance 0 or 1 in
+#' the likelihood calculation. "condition" is the default. Passed to fitJ
 #'
 #' @returns Returns a list containing "loglik", "J1", "J2", "shiftage" and (optionally)
 #' three confidence intervals: "CI_J1", "CI_J2", and "CI_shiftage"
@@ -71,13 +76,13 @@
 #'   c(ages[length(ages)],fit$CI_shiftage[2],fit$CI_shiftage[2],ages[1]),lwd=1,col="grey50")
 #' lines(1/c(fit$J1,fit$J1,fit$J2,fit$J2),c(min(ages),fit$shiftage,fit$shiftage,max(ages)),lwd=2)
 fitJshift <- function(occs,ages,liksurf=FALSE,sampled=TRUE,generationtime=1,
-                      CI=FALSE,searchinterval=c(1,9)){
+                      CI=FALSE,searchinterval=c(1,9),handle.ext="condition"){
   if(dim(occs)[1] != length(ages)){stop("'ages' must have length equal to the number of rows
                                         of 'occs'")}
   bestfits <- list() #list of best-fit models for every shift age (no CIs yet)
   #first age
   noshift <- fitJ(occs,ages,sampled=sampled,generationtime=generationtime,CI=FALSE,
-                  searchinterval=searchinterval)
+                  searchinterval=searchinterval,handle.ext=handle.ext)
   bestfits <- append(bestfits,list(list("loglik"=noshift$loglik,"J1"=NA,"J2"=noshift$J,
                                         "shiftage"=ages[1])))
   for(i in 2:(length(ages)-1)){ #consider all shift ages except first and last ages
@@ -85,12 +90,12 @@ fitJshift <- function(occs,ages,liksurf=FALSE,sampled=TRUE,generationtime=1,
     occs1 <- occs[(length(ages)+1-i):length(ages),]
     ages1 <- ages[1:i]
     fit1 <- fitJ(occs1,ages1,sampled=sampled,generationtime=generationtime,CI=FALSE,
-                 searchinterval=searchinterval)
+                 searchinterval=searchinterval,handle.ext=handle.ext)
     #upper half of occs
     occs2 <- occs[1:(length(ages)+1-i),]
     ages2 <- ages[i:length(ages)]
     fit2 <- fitJ(occs2,ages2,sampled=sampled,generationtime=generationtime,CI=FALSE,
-                 searchinterval=searchinterval)
+                 searchinterval=searchinterval,handle.ext=handle.ext)
     #append to bestfits
     bestfits <- append(bestfits,list(list("loglik"=fit1$loglik+fit2$loglik,"J1"=fit1$J,"J2"=fit2$J,
                                           "shiftage"=ages[i])))}
@@ -109,9 +114,9 @@ fitJshift <- function(occs,ages,liksurf=FALSE,sampled=TRUE,generationtime=1,
     ages2 <- ages[which.max(liksurf):length(ages)]
     #this is slightly inefficient
     fit1 <- fitJ(occs1,ages1,sampled=sampled,generationtime=generationtime,CI=TRUE,
-                 searchinterval=searchinterval,CI.df=3)
+                 searchinterval=searchinterval,CI.df=3,handle.ext=handle.ext)
     fit2 <- fitJ(occs2,ages2,sampled=sampled,generationtime=generationtime,CI=TRUE,
-                 searchinterval=searchinterval,CI.df=3)
+                 searchinterval=searchinterval,CI.df=3,handle.ext=handle.ext)
     out$CI_J1 <- fit1$CI
     out$CI_J2 <- fit2$CI
     threshold <- stats::qchisq(p=0.95,d=3)/2 #likelihood threshold for CI

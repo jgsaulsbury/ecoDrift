@@ -10,7 +10,8 @@ plot_spindles(
   plot.ss = TRUE,
   linesevery = NA,
   ylab = "Age, years",
-  removeyaxis = FALSE
+  removeyaxis = FALSE,
+  revertsettings = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,9 @@ Default is NA (don't draw them).}
 
 \item{removeyaxis}{boolean indicating whether to remove the y axis from the plot,
 allowing the user to plot a custom y axis after the fact. Default is FALSE.}
+
+\item{revertsettings}{boolean indicating whether graphics settings should be reverted to normal
+after running. Defaults to TRUE, but can be useful to disable in some cases.}
 }
 \value{
 Plots spindle diagrams depicting the relative abundance of each species

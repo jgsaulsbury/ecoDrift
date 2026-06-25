@@ -11,7 +11,8 @@ fitJshift(
   sampled = TRUE,
   generationtime = 1,
   CI = FALSE,
-  searchinterval = c(1, 9)
+  searchinterval = c(1, 9),
+  handle.ext = "condition"
 )
 }
 \arguments{
@@ -38,6 +39,12 @@ intervals: in theory, for a 95\% confidence interval there is a 95\% chance that
 all parameter estimates are correct.}
 
 \item{searchinterval}{consider values of log10J within this interval.}
+
+\item{handle.ext}{string specifying how extinction (and monodominance) should be
+handled. Three options: "ignore" simply passes over these transitions.
+"condition" returns logliks conditional on non-extinction and non-monodominance.
+"calculate" returns logliks that include species that hit abundance 0 or 1 in
+the likelihood calculation. "condition" is the default. Passed to fitJ}
 }
 \value{
 Returns a list containing "loglik", "J1", "J2", "shiftage" and (optionally)

@@ -4,7 +4,7 @@
 \alias{xprob}
 \title{Probability of a single transition under neutral theory without migration}
 \usage{
-xprob(n1, n2, Jt, ss = NA, ignore.ext = FALSE)
+xprob(n1, n2, Jt, ss = NA, handle.ext = "condition")
 }
 \arguments{
 \item{n1}{vector of relative abundances at start of transition.}
@@ -16,8 +16,11 @@ xprob(n1, n2, Jt, ss = NA, ignore.ext = FALSE)
 \item{ss}{single value or vector of length 2 giving number of samples at
 times for n1 and n2. If a single value given, assumes it applies to both n1 and n2.}
 
-\item{ignore.ext}{boolean indicating whether transitions that end in 0 or 1
-should be excluded from likelihood calculation. FALSE by default.}
+\item{handle.ext}{string specifying how extinction (and monodominance) should be
+handled. Three options: "ignore" simply passes over these transitions.
+"condition" returns logliks conditional on non-extinction and non-monodominance.
+"calculate" returns logliks that include species that hit abundance 0 or 1 in
+the likelihood calculation. "condition" is the default.}
 }
 \value{
 Returns loglik value.

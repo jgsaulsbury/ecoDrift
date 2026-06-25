@@ -14,6 +14,7 @@ plot_Js(
   searchinterval = c(1, 9),
   ylab = "Age, years",
   removeyaxis = FALSE,
+  handle.ext = "condition",
   ...
 )
 }
@@ -40,6 +41,12 @@ community (TRUE) or instead represents true species abundances (FALSE).}
 \item{ylab}{Label for y axis, passed to plotting function. Default is "Age, years".}
 
 \item{removeyaxis}{boolean indicating whether to plot without a y-axis.}
+
+\item{handle.ext}{string specifying how extinction (and monodominance) should be
+handled. Three options: "ignore" simply passes over these transitions.
+"condition" returns logliks conditional on non-extinction and non-monodominance.
+"calculate" returns logliks that include species that hit abundance 0 or 1 in
+the likelihood calculation. "condition" is the default. Passed to fitJ.}
 
 \item{...}{additional plotting parameters passed to plot().}
 }

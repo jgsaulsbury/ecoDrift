@@ -38,15 +38,15 @@ individual is drawn from the static metacommunity rather than the previous
 generation of the local community.
 }
 \examples{
-ecoDrift:::xprobm(n1=c(0.1,0.1,0.8),n2=c(0.3,0.3,0.4),
+ecoDrift::xprobm(n1=c(0.1,0.1,0.8),n2=c(0.3,0.3,0.4),
   nmeta=c(0.4,0.4,0.2),J=1000,t=20,m=0.05,ss=10000)
 #4.494708
 # shorter timescale:
-ecoDrift:::xprobm(n1=c(0.1,0.1,0.8),n2=c(0.3,0.3,0.4),
+ecoDrift::xprobm(n1=c(0.1,0.1,0.8),n2=c(0.3,0.3,0.4),
   nmeta=c(0.4,0.4,0.2),J=1000,t=10,m=0.05,ss=10000)
 #-2.949927
 #smaller sample size:
-ecoDrift:::xprobm(n1=c(0.1,0.1,0.8),n2=c(0.3,0.3,0.4),
+ecoDrift::xprobm(n1=c(0.1,0.1,0.8),n2=c(0.3,0.3,0.4),
   nmeta=c(0.4,0.4,0.2),J=1000,t=10,m=0.05,ss=100)
 #1.501469
 

@@ -12,7 +12,7 @@ fitJ(
   CI = FALSE,
   searchinterval = c(1, 9),
   CI.df = 1,
-  ignore.ext = FALSE
+  handle.ext = "condition"
 )
 }
 \arguments{
@@ -40,8 +40,11 @@ on the maximum-likelihood estimate of J. Uses function CIfunc_J.}
 using the chi-square lookup table to calculate confidence intervals. Should be
 1 unless calculating a simultaneous confidence interval.}
 
-\item{ignore.ext}{boolean indicating whether transitions that end in 0 should be excluded
-from likelihood calculation. FALSE by default. Passed to xxprob.}
+\item{handle.ext}{string specifying how extinction (and monodominance) should be
+handled. Three options: "ignore" simply passes over these transitions.
+"condition" returns logliks conditional on non-extinction and non-monodominance.
+"calculate" returns logliks that include species that hit abundance 0 or 1 in
+the likelihood calculation. "condition" is the default. Passed to xxprob.}
 }
 \value{
 Returns a list containing "loglik", "J", and (optionally) "CI".

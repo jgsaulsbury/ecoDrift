@@ -10,7 +10,7 @@ xxprob(
   ages,
   sampled = TRUE,
   generationtime = 1,
-  ignore.ext = FALSE
+  handle.ext = "condition"
 )
 }
 \arguments{
@@ -30,8 +30,11 @@ community (TRUE) or instead represents true species abundances (FALSE).}
 
 \item{generationtime}{time between generations, in years.}
 
-\item{ignore.ext}{boolean indicating whether transitions that end in 0 should be excluded
-from likelihood calculation. FALSE by default. Passed to xprob.}
+\item{handle.ext}{string specifying how extinction (and monodominance) should be
+handled. Three options: "ignore" simply passes over these transitions.
+"condition" returns logliks conditional on non-extinction and non-monodominance.
+"calculate" returns logliks that include species that hit abundance 0 or 1 in
+the likelihood calculation. "condition" is the default. Passed to xprob.}
 }
 \value{
 Returns loglik value.
