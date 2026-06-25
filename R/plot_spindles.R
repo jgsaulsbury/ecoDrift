@@ -18,6 +18,9 @@
 #' @param ylab value indicating what to print on the y axis. Default is "Age, years"
 #' @param removeyaxis boolean indicating whether to remove the y axis from the plot,
 #' allowing the user to plot a custom y axis after the fact. Default is FALSE.
+#' @param revertsettings boolean indicating whether graphics settings should be reverted to normal
+#' after running. Defaults to TRUE, but can be useful to disable in some cases.
+#'
 #' @returns Plots spindle diagrams depicting the relative abundance of each species
 #' through the timeseries.
 #' @export
@@ -30,9 +33,9 @@
 #' ages <- seq(0,tslength,every)
 #' timeseries <- simDrift(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
 #' plot_spindles(occs=timeseries$simulation,ages=timeseries$times,linesevery=100)
-plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years",removeyaxis=FALSE){
+plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years",removeyaxis=FALSE,revertsettings=TRUE){
   oldpar <- par(no.readonly = TRUE) #to preserve settings
-  on.exit(par(oldpar))
+  if(revertsettings){on.exit(par(oldpar))}
   buffer <- 0.05 #buffer between spindles
   ss <- rowSums(occs)
   occs.prop <-  occs/ss
