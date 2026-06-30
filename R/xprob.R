@@ -81,8 +81,11 @@ xprob <- function(n1,n2,Jt,ss=NA,handle.ext="condition"){
                           prob=n1[i]/(1-sum(n1[1:(i-1)])),log=T)+log(size)
       #if conditioning on n2[i] being neither 0 nor 1...
       if(handle.ext=="condition"){
-        denom <- cbinom::pcbinom(q=size-sum(n2.adj[1:(i-1)]-0.5)+0.5,size=size-sum(n2.adj[1:(i-1)]-0.5),prob=n1[i]/(1-sum(n1[1:(i-1)])))-
-          cbinom::pcbinom(q=0.5,size=size-sum(n2.adj[1:(i-1)]-0.5),prob=n1[i]/(1-sum(n1[1:(i-1)])))
+        #get value of the CDF 0.5 units from the left and right boundaries
+        cdf <- cbinom::pcbinom(q=c(0.5,size-sum(n2.adj[1:(i-1)]-0.5)+0.5),
+                               size=size-sum(n2.adj[1:(i-1)]-0.5),
+                               prob=n1[i]/(1-sum(n1[1:(i-1)])))
+        denom <- diff(cdf)
         out <- out - log(denom)}
     }
   }
