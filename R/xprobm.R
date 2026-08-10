@@ -20,6 +20,9 @@
 #' @param m migration rate.
 #' @param ss single value or vector of length 2 giving number of samples at
 #' times for n1 and n2. If a single value given, assumes it applies to both n1 and n2.
+#' @param condition.nonext boolean indicating whether likelihoods should be conditioned
+#' on n2 not including any 0s or 1 (local extinction or monodominance).
+#' TRUE is default.
 #'
 #' @importFrom cbinom dcbinom
 #'
@@ -38,7 +41,7 @@
 #'   nmeta=c(0.4,0.4,0.2),J=1000,t=10,m=0.05,ss=100)
 #' #1.501469
 #'
-xprobm <- function(n1,n2,nmeta,J,t,m,ss=NA){
+xprobm <- function(n1,n2,nmeta,J,t,m,ss=NA,condition.nonext=TRUE){
   #error handling
   tol <- 1E-7
   if(sum(n1)<=0|sum(n2)<=0|sum(n1)>1+tol|sum(n2)>1+tol){
@@ -49,15 +52,15 @@ xprobm <- function(n1,n2,nmeta,J,t,m,ss=NA){
   if(any(nmeta<0) | sum(nmeta)<=0){stop("nmeta must be all nonnegative and sum to >0")}
   #body
   if(sum(nmeta) != 1){nmeta <- nmeta/sum(nmeta)} #fix nmeta if needed
-  order <- rev(order(n1)) #prepping n1 and n2
+  order <- rev(order(n1)) #sort abundance vectors by abundance of n1 and n2
   n1 <- n1[order]
   n2 <- n2[order]
   nmeta <- nmeta[order]
-  while(sum(n1) > 1-tol | sum(n2) > 1-tol){ #remove last species if sum is 1, not needed for calculation
+  while(sum(n1) > 1-tol){ #remove last species if sum of n1 is 1, not needed for calculation
     n1 <- n1[-length(n1)]
     n2 <- n2[-length(n2)]
     nmeta <- nmeta[-length(nmeta)]}
-  n1 <- n1[!n2==0];n2 <- n2[!n2==0];nmeta <- nmeta[!nmeta==0] #remove indices where n2 is zero (zeros in n1 removed in previous step)
+  n1 <- n1[!(n2==0|n2==1)];n2 <- n2[!(n2==0|n2==1)];nmeta <- nmeta[!(n2==0|n2==1)] #remove indices where n2 is zero or one (zeros in n1 removed in previous step)
   #prep migration
   weight.local <- (1-m)**t
   prob <- n1*weight.local + nmeta*(1-weight.local)
@@ -67,11 +70,24 @@ xprobm <- function(n1,n2,nmeta,J,t,m,ss=NA){
     if(length(ss)==1){ss <- rep(ss,2)} #duplicate if a single value given
     sizes <- c(ss,size)
     size <- min(sizes) / sum(min(sizes)/sizes)}
-  n2 <- n2*size + 0.5 #moving onto scale of cbinom
+  n2.adj <- n2*size + 0.5 #moving onto scale of cbinom
   #start with species 1
   out <- ifelse(length(n1)==0,0,
-    cbinom::dcbinom(x=n2[1],size=size,prob=prob[1],log=T)+log(size)) #for taxon 1
+    cbinom::dcbinom(x=n2.adj[1],size=size,prob=prob[1],log=T)+log(size)) #for taxon 1
+  #if conditioning on n2[1] being neither 0 nor 1...
+  if(condition.nonext){
+    cdf <- cbinom::pcbinom(q=c(0.5,size+0.5),size=size,prob=prob[1])
+    denom <- diff(cdf)
+    out <- out - log(denom)}
   for(i in seq_len(length(n1))[-1]){ #for every other taxon i
-    out <- out + dcbinom(x=n2[i],size=size-sum(n2[1:i-1]-0.5),prob=prob[i]/(1-sum(prob[1:i-1])),log=T)+log(size)
+    out <- out + dcbinom(x=n2.adj[i],size=size-sum(n2.adj[1:(i-1)]-0.5),prob=prob[i]/(1-sum(prob[1:(i-1)])),log=T)+log(size)
+    #if conditioning on n2[i] being neither 0 nor 1...
+    if(condition.nonext){
+      #get value of the CDF 0.5 units from the left and right boundaries
+      cdf <- cbinom::pcbinom(q=c(0.5,size-sum(n2.adj[1:(i-1)]-0.5)+0.5),
+                             size=size-sum(n2.adj[1:(i-1)]-0.5),
+                             prob=prob[i]/(1-sum(prob[1:(i-1)])))
+      denom <- diff(cdf)
+      out <- out - log(denom)}
     }
   return(out)}

@@ -45,7 +45,7 @@ xprob <- function(n1,n2,Jt,ss=NA,handle.ext="condition"){
     size <- 1/sum(1/sizes)
   } else {
     size <- Jt}
-  order <- rev(order(n1)) #sort by abundance of n1
+  order <- rev(order(n1)) #sort abundance vectors by abundance of n1
   n1 <- n1[order]
   n2 <- n2[order]
   while(sum(n1) > 1-tol){ #remove last species if sum of n1 is 1, not needed for calculation
@@ -65,8 +65,8 @@ xprob <- function(n1,n2,Jt,ss=NA,handle.ext="condition"){
     out <- cbinom::dcbinom(x=n2.adj[1],size=size,prob=n1[1],log=T)+log(size) #multiplied to make sense for prob densities on [0,1] interval
     #if conditioning on n2[1] being neither 0 nor 1...
     if(handle.ext=="condition"){
-      denom <- cbinom::pcbinom(q=size+0.5,size=size,prob=n1[1])-
-        cbinom::pcbinom(q=0.5,size=size,prob=n1[1])
+      cdf <- cbinom::pcbinom(q=c(0.5,size+0.5),size=size,prob=n1[1])
+      denom <- diff(cdf)
       out <- out - log(denom)}
   }
   for(i in seq_len(length(n1))[-1]){ #for every other taxon i
