@@ -8,30 +8,37 @@ xxprobm(
   log10Jm,
   occs,
   ages,
+  metacommunity,
   sampled = TRUE,
-  metacommunity = NA,
-  generationtime = 1
+  generationtime = 1,
+  condition.nonext = TRUE
 )
 }
 \arguments{
 \item{log10Jm}{a 2-length vector containing log10 J (community size) and log10 m
 (migration rate).}
 
-\item{occs}{matrix of the number of observations in each species at each time.
-One column for each species, one row for each time slice. Time goes from oldest
-at the bottom to youngest at the top.}
+\item{occs}{matrix of the number of observations in each species at each time,
+or else a list containing several such matrices.
+In each matrix there is one column per species and one row per time slice.
+Time goes from oldest at the bottom to youngest at the top.}
 
 \item{ages}{vector containing the ages of each time slice, in years, from
-oldest to youngest.}
+oldest to youngest, or else a list of such vectors if there are multiple
+occurrence matrices.}
+
+\item{metacommunity}{relative abundances of each species in the metacommunity,
+given in the same order as in occs, or else a list of such vectors. If metacommunity
+is left NA, xxprobm will use abundance in first timestep as a guess.}
 
 \item{sampled}{boolean indicating whether occs represents a sampled
 community (TRUE) or instead represents true species abundances (FALSE).}
 
-\item{metacommunity}{relative abundances of each species in the metacommunity,
-given in the same order as in occs. If none given, takes the average species
-abundances across the timeseries as a guess.}
-
 \item{generationtime}{time between generations, in years.}
+
+\item{condition.nonext}{boolean indicating whether likelihoods should be conditioned
+on n2 not including any 0s or 1 (local extinction or monodominance). Passed to xprobm.
+TRUE is default.}
 }
 \value{
 loglik value.
@@ -53,13 +60,13 @@ set.seed(10)
 #simulate under neutral theory with migration
 sim <- simDrift(c(1000,1000,1000,1000),ts=seq(0,2000,50),m=0.005,ss=10000)
 par(mfrow=c(1,2))
-plot_spindles(occs=sim$simulation,ages=sim$times,plot.ss=FALSE)
+plot_spindles(occs=sim$simulation,ages=sim$times,plot.ss=FALSE,revertsettings=FALSE)
 #plot likelihood surface for migration rate
 ms <- seq(-7,-1,0.1) #get likelihood for these values of m
 liks <- c()
 for(i in ms){
   liks <- c(liks,
-    ecoDrift::xxprobm(log10Jm = c(log10(4000),i),occs=sim$simulation,ages=sim$times,sampled=TRUE))}
+    ecoDrift:::xxprobm(log10Jm = c(log10(4000),i),occs=sim$simulation,ages=sim$times,sampled=TRUE))}
 plot(10**ms,liks,ylim=c(100,300),xlab="m",ylab="loglik",type='l',log='x')
 lines(c(0.005,0.005),c(0,400),lty='dashed') #true m
 }
