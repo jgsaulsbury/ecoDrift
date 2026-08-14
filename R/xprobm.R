@@ -60,7 +60,7 @@ xprobm <- function(n1,n2,nmeta,J,t,m,ss=NA,condition.nonext=TRUE){
     n1 <- n1[-length(n1)]
     n2 <- n2[-length(n2)]
     nmeta <- nmeta[-length(nmeta)]}
-  n1 <- n1[!(n2==0|n2==1)];n2 <- n2[!(n2==0|n2==1)];nmeta <- nmeta[!(n2==0|n2==1)] #remove indices where n2 is zero or one (zeros in n1 removed in previous step)
+  nmeta <- nmeta[!(n2==0|n2==1)];n1 <- n1[!(n2==0|n2==1)];n2 <- n2[!(n2==0|n2==1)] #remove indices where n2 is zero or one (zeros in n1 removed in previous step)
   #prep migration
   weight.local <- (1-m)**t
   prob <- n1*weight.local + nmeta*(1-weight.local)

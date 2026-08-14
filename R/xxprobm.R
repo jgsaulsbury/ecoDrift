@@ -46,7 +46,7 @@
 #'     ecoDrift:::xxprobm(log10Jm = c(log10(4000),i),occs=sim$simulation,ages=sim$times,sampled=TRUE))}
 #' plot(10**ms,liks,ylim=c(100,300),xlab="m",ylab="loglik",type='l',log='x')
 #' lines(c(0.005,0.005),c(0,400),lty='dashed') #true m
-xxprobm <- function(log10Jm,occs,ages,metacommunity,sampled=TRUE,generationtime=1,condition.nonext=TRUE){
+xxprobm <- function(log10Jm,occs,ages,metacommunity=NA,sampled=TRUE,generationtime=1,condition.nonext=TRUE){
   #catching errors
   if(!is.list(ages)){ #if there's just one timeseries
     occs <- list(occs) #make it the only member of a list
@@ -76,5 +76,5 @@ xxprobm <- function(log10Jm,occs,ages,metacommunity,sampled=TRUE,generationtime=
                           xprobm(n1=as.numeric(occs.prop[i+1,]),n2=as.numeric(occs.prop[i,]),
                             nmeta=meta,J=10**log10Jm[1],m=10**log10Jm[2],t=t,ss=c(ss[i+1],ss[i]),condition.nonext=condition.nonext),
                           xprobm(n1=as.numeric(occs.prop[i+1,]),n2=as.numeric(occs.prop[i,]),
-                            nmeta=meta,J=10**log10Jm[1],m=10**log10Jm[2],t=t,ss=NA),condition.nonext=condition.nonext)}}
+                            nmeta=meta,J=10**log10Jm[1],m=10**log10Jm[2],t=t,ss=NA,condition.nonext=condition.nonext))}}
   return(loglik)}
