@@ -58,7 +58,7 @@ xxprobm <- function(log10Jm,occs,ages,metacommunity=NA,sampled=TRUE,generationti
   if(log10Jm[2]>0|10**log10Jm[1]==0){return(-Inf)} #to use optim() without constraining param vals
   #body
   loglik <- 0
-  for(i in length(occs)){ #for each member of the list of occurrence tables
+  for(i in seq(length(occs))){ #for each member of the list of occurrence tables
     occ <- occs[[i]]
     age <- ages[[i]]
     meta <- metacommunity[[i]]
