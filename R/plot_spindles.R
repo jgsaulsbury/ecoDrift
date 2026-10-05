@@ -60,7 +60,7 @@ plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years"
     taxnames <- colnames(occs.prop)[i]
     graphics::axis(side=1,at=x,labels=ifelse(!is.null(taxnames),taxnames,""),tick=FALSE,line=-0.5,cex.axis=0.5 + peak.relabs[i]/max(peak.relabs)*0.3)
     graphics::par(las=0)
-    graphics::polygon(x=c(x+occs.prop[,i]/2,rev(x-occs.prop[,i]/2)),y=c(rev(ages),ages),col='grey85')
+    graphics::polygon(x=c(x+occs.prop[,i]/2,rev(x-occs.prop[,i]/2)),y=c(rev(ages),ages),col=fill)
     for(j in seq(length(ages))){ #for every age
       graphics::lines(c(x-occs.prop[length(ages)+1-j,i]/2,x+occs.prop[length(ages)+1-j,i]/2),c(ages[j],ages[j]),lwd=1)
     }
