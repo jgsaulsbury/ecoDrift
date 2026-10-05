@@ -8,7 +8,7 @@ xxprobm(
   log10Jm,
   occs,
   ages,
-  metacommunity,
+  metacommunity = NA,
   sampled = TRUE,
   generationtime = 1,
   condition.nonext = TRUE

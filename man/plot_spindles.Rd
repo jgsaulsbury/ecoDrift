@@ -10,6 +10,7 @@ plot_spindles(
   plot.ss = TRUE,
   linesevery = NA,
   ylab = "Age, years",
+  fill = "grey85",
   removeyaxis = FALSE,
   revertsettings = TRUE
 )
@@ -29,6 +30,8 @@ on the right side of the plot.}
 Default is NA (don't draw them).}
 
 \item{ylab}{value indicating what to print on the y axis. Default is "Age, years"}
+
+\item{fill}{string indicating the fill color for the spindles}
 
 \item{removeyaxis}{boolean indicating whether to remove the y axis from the plot,
 allowing the user to plot a custom y axis after the fact. Default is FALSE.}
