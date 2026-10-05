@@ -70,11 +70,11 @@ xxprobm <- function(log10Jm,occs,ages,metacommunity=NA,sampled=TRUE,generationti
       meta <- occs.prop[length(ss),]} #use local abundance in the first timestep as a guess
     if(dim(occ)[2] != length(meta)){stop(paste("length of metacommunity",i,
                                                "does not match number of columns in occurrence timeseries"))}
-    for(i in rev(seq(dim(occ)[1]-1))){ #for every transition (from oldest to youngest)
-      t = abs(age[i+1]-age[i])/generationtime
+    for(j in rev(seq(dim(occ)[1]-1))){ #for every transition (from oldest to youngest)
+      t = abs(age[j+1]-age[j])/generationtime
       loglik <- loglik + ifelse(sampled,
-                          xprobm(n1=as.numeric(occs.prop[i+1,]),n2=as.numeric(occs.prop[i,]),
-                            nmeta=meta,J=10**log10Jm[1],m=10**log10Jm[2],t=t,ss=c(ss[i+1],ss[i]),condition.nonext=condition.nonext),
-                          xprobm(n1=as.numeric(occs.prop[i+1,]),n2=as.numeric(occs.prop[i,]),
+                          xprobm(n1=as.numeric(occs.prop[j+1,]),n2=as.numeric(occs.prop[j,]),
+                            nmeta=meta,J=10**log10Jm[1],m=10**log10Jm[2],t=t,ss=c(ss[j+1],ss[j]),condition.nonext=condition.nonext),
+                          xprobm(n1=as.numeric(occs.prop[j+1,]),n2=as.numeric(occs.prop[j,]),
                             nmeta=meta,J=10**log10Jm[1],m=10**log10Jm[2],t=t,ss=NA,condition.nonext=condition.nonext))}}
   return(loglik)}
