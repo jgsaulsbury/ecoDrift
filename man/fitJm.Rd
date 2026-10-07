@@ -8,9 +8,10 @@ fitJm(
   occs,
   ages,
   metacommunity = NA,
+  m = NA,
   sampled = TRUE,
   generationtime = 1,
-  condition.nonext = condition.nonext
+  condition.nonext = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ oldest to youngest.}
 or list of several such vectors. If this doesn't sum to 1, will be normalized
 to sum to 1. If metacommunity is left NA, xxprobm will use abundance in first timestep
 as a guess.}
+
+\item{m}{float (optional) to constrain m to}
 
 \item{sampled}{boolean indicating whether occs represents a sampled
 community (TRUE) or instead represents true species abundances (FALSE).}
