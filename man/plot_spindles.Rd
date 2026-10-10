@@ -12,7 +12,8 @@ plot_spindles(
   ylab = "Age, years",
   fill = "grey85",
   removeyaxis = FALSE,
-  revertsettings = TRUE
+  revertsettings = TRUE,
+  sortbypeak = TRUE
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ allowing the user to plot a custom y axis after the fact. Default is FALSE.}
 
 \item{revertsettings}{boolean indicating whether graphics settings should be reverted to normal
 after running. Defaults to TRUE, but can be useful to disable in some cases.}
+
+\item{sortbypeak}{boolean indicating whether to sort the taxa from most to least abundant.
+Default is TRUE.}
 }
 \value{
 Plots spindle diagrams depicting the relative abundance of each species

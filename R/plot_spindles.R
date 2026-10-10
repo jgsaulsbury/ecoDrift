@@ -21,6 +21,8 @@
 #' allowing the user to plot a custom y axis after the fact. Default is FALSE.
 #' @param revertsettings boolean indicating whether graphics settings should be reverted to normal
 #' after running. Defaults to TRUE, but can be useful to disable in some cases.
+#' @param sortbypeak boolean indicating whether to sort the taxa from most to least abundant.
+#' Default is TRUE.
 #'
 #' @returns Plots spindle diagrams depicting the relative abundance of each species
 #' through the timeseries.
@@ -34,13 +36,15 @@
 #' ages <- seq(0,tslength,every)
 #' timeseries <- simDrift(startingabs=rep(J/nsp,nsp),ts=ages,ss=1000)
 #' plot_spindles(occs=timeseries$simulation,ages=timeseries$times,linesevery=100)
-plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years",fill='grey85',removeyaxis=FALSE,revertsettings=TRUE){
+plot_spindles <- function(occs,ages,plot.ss=TRUE,linesevery=NA,ylab="Age, years",fill='grey85',removeyaxis=FALSE,revertsettings=TRUE,sortbypeak=TRUE){
   oldpar <- par(no.readonly = TRUE) #to preserve settings
   if(revertsettings){on.exit(par(oldpar))}
   buffer <- 0.05 #buffer between spindles
   ss <- rowSums(occs)
   occs.prop <-  occs/ss
-  occs.prop <- occs.prop[,rev(order(apply(occs.prop,MARGIN=2,FUN=max)))] #resort occs.prop by peak relab
+  if(sortbypeak){
+    occs.prop <- occs.prop[,rev(order(apply(occs.prop,MARGIN=2,FUN=max)))] #resort occs.prop by peak relab
+  }
   peak.relabs <- apply(occs.prop, MARGIN=2, FUN=max) #stores peak relab of each sp
   plot(1,type='n',xlim=c(0,sum(peak.relabs)+buffer*(length(peak.relabs)-1)),
        ylim=c(ages[1],utils::tail(ages,1)),xaxt='n',ylab=ylab,xlab="",yaxt=ifelse(removeyaxis,"n","s"))
